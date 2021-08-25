@@ -1,0 +1,90 @@
+% *********************************************************
+% *                      Frontespizio                     *
+% *																												*
+% *   Conforme a: http://www.unimi.it/ateneo/12902.htm    *
+% *********************************************************
+
+% *                 Definizione variabili                 *
+
+% ?	- \titolocorso			-> Definisce classe titolo del corso di laurea 
+%		- \degreeyear				-> Definisce l'anno accademico
+%		- \principaladviser	-> Definisce il nome del professore
+
+\def\titolocorso#1{\gdef\titolocorso{#1}}			
+\def\degreeyear#1{\gdef\degreeyear{#1}}				
+\def\principaladviser#1{\gdef\principaladviser{#1}}		
+
+
+
+% *           Ridefinizione \maketitle per unimi          *
+
+\renewcommand{\maketitle}
+{
+\begin{titlepage}
+  \thispagestyle{empty}
+  \addtolength{\footskip}{-4cm}
+  \addtolength{\textheight}{6cm}
+  \addtolength{\topmargin}{-1cm}
+  \addtolength{\hoffset}{0,75cm}
+  \addtolength{\textwidth}{2cm}
+  \let\footnotesize\small
+  \let\footnoterule\relax
+
+\begin{flushleft}
+\parpic{\MIN\ATENEO} 														
+
+%IMMAGINE MINERVA def. in macro.sty
+%\bigskip
+%\picskip{3}														
+%N� DI LINEE DOPO L'IMM. CON LA STESSA FORMATTAZIONE
+
+\vspace{0.8cm}\\\DIP\\\FAC\vspace{0.5cm}\par
+\LINE																														%LINEA ORIZZONTALE def. in macro.sty
+	\begin{center}
+		{\small Corso di} \textsc{\titolocorso}											%TITOLO DEL CORSO
+	\end{center}
+
+	\begin{center}
+		\vspace{3cm}
+    {\Huge \bf \@title \\ \par}																	%TITOLO DEL DOCUMENTO
+  \end{center}
+  \par
+  \bigskip\bigskip\bigskip\bigskip
+
+
+  \begin{center}
+  \bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip%\bigskip\bigskip
+		\begin{tabular}{llr}
+			{\large Studenti:}&\qquad\qquad\qquad&{\large Docente del corso:}\\
+ 			{\large \@author}& & {\large \principaladviser}\\
+ 			{\large Elisa Radaelli}& & \\
+ 			{\large Silvia Zanoli}& & \\
+			& & \\
+		\end{tabular}
+  \end{center}
+
+  \bigskip\bigskip
+  \begin{center}
+    \LINE\\
+    {Anno Accademico \degreeyear}
+  \end{center}
+  
+  \end{titlepage}
+  \setcounter{footnote}{0}%
+  \let\thanks\relax\let\maketitle\relax
+
+}
+
+% *                 Definizione dedica                    *
+
+\def\dedica#1{\gdef\dedica{#1}}
+\newcommand{\makededica}
+{
+  \thispagestyle{empty}
+  \begin{flushright}
+  \textcolor{white}{.}
+  \vspace{4cm}
+  \dedica
+  \end{flushright}
+  \pagebreak 
+}

@@ -1,0 +1,192 @@
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter{I risultati sperimentali}\label{sec:IRisultatiSperimentali}
+
+La macchina utilizzata per le sperimentazioni ha le seguenti caratteristiche:
+\begin{itemize}
+	\item CPU: Intel Core Duo T2400 $1.87\ GHz$
+	\item HD: $160\ GB$ $7200\ rpm$
+	\item RAM: $1\ GB$
+	\item SO: Microsoft Windows XP [Versione 5.1.2600]
+	\item marca/modello: Sony VAIO
+\end{itemize}
+%Descrizione del tipo di macchina utilizzata per le sperimentazioni, linguaggio, sistema operativo 
+%e breve riassunto dei risultati ottenuti.
+
+\section{I dati}
+I dati che vengono passati al problema sono: la dimensione \verb|dim|, la matrice dei costi \verb|assigncost|, la matrice delle risorse \verb|risorse|.\\
+La dimensione del problema è data dalla dimensione della matrice dei costi la quale viene letta da file (vedi Sezione \ref{sec:lettura_mat}), mentre la matrice delle risorse viene generata a partire da quella dei costi (vedi Sezione \ref{sec:gen_ris}). Affinché l'istanza del problema possa essere codificata nel linguaggio AMPL, è stato necessario formattare il file in modo conforme. Questo ha consentito di risolvere problemi col risolutore gratuito GLPK e conservare quindi il valore ottimo. Le successive sezioni descrivono i passaggi per ottenere tale formattazione.
+ 
+\subsection{Lettura matrice dei costi}\label{sec:lettura_mat}
+
+Dato un file (vedi Istanza \ref{file_org}) contenente la sola matrice dei costi, l'obiettivo della procedura di codifica è quello di formattare la stessa istanza in linguaggio AMPL (vedi Istanza\ref{file_dest} in Sezione \ref{sec:FormatoDiOutputDelleIstanze}).% inoltre viene aggiunta una matrice delle risorse, negativamente correlata a quella dei costi, e il budget. Nella formattazione originale (vedi Istanza \ref{file_org}):
+\renewcommand*\lstlistingname{Istanza} 										%RIDENOMINAZIONE DELLA CAPTION IN Istanza 
+\begin{lstlisting}[captionpos={b},caption={File istanza originale},label=file_org]
+100
+52 89 40 77 89 14 9 77 92 77 52 53 96
+96 92 76 33 81 92 84 36 81 47 55 87 35
+\end{lstlisting}
+Nella riga 1, in Istanza \ref{file_org}, troviamo la dimensione dell'istanza; le successive righe contengono i costi $c_{ij}$. 
+
+\subsection{Generazione della matrice delle risorse}\label{sec:gen_ris}
+
+Per la generazione casuale dei consumi di risorsa $r_{ij}$, si è utilizzata l'equazione (\ref{eq:gen_matrix_risorse}):
+\begin{equation}\label{eq:gen_matrix_risorse}
+	r_{ij}=min\left( c_{min} + c_{max} - c_{ij} + 10 \cdot \lambda \left(0,10\right), c_{max}\right)
+\end{equation}
+dove $c_{min}$ e $c_{max}$, sono stati calcolati rispettivamente come il minimo ed il massimo elemento della matrice dei costi $c_{ij}$; infine, $\lambda \left(0,10\right)$ rappresenta un numero casuale intero tra $0$ e $10$ generato utilizzando la libreria \emph{rand.h}; il fattore 10 rappresenta un disturbo alla funzione che ritorna un numero intero casuale. Il minimo ottenuto tra i valori sopra e $c_{rand}$, calcolato come \verb|assigncost[n*ran1(seed)][n*ran1(seed)]| rappresenta il consumo di risorsa. L'obietivo è quello di generare istanze difficili, in cui il consumo di risorsa è negativamente correlato al costo $c_{ij}$; in quanto quelle poco costose tendono a essere inammissibili; e viceversa le ammissibili a essere costose.
+
+\subsection{Formato di output delle istanze}\label{sec:FormatoDiOutputDelleIstanze}
+
+La nuova formattazione è rappresentata in Istanza \ref{file_dest} ordinata per righe crescenti e per colonne crescenti:
+\begin{lstlisting}[captionpos={b},caption={File istanza nuovo},label=file_dest]
+param N := 100;
+param C := 
+[0,0] 52 [0,1] 89 [0,2] ...
+param R := 
+[0,0] 89 [0,1] 94 ...
+param B := 75;
+end;
+\end{lstlisting}
+La prima riga riporta la dimensione dell'istanza. Segue la matrice dei costi nel formato $[i,j]$ $c_{ij}$, quindi la matrice delle risorse definita in modo analogo a quella dei costi, infine il budget $B$ e infine il terminatore end.
+
+\newpage
+\section{Risultati}
+
+\subsection{Consumi casuali}\label{sec:ConsCasuali}
+
+I risultati mostrati nella Tabella \ref{tab:consCasuali} si riferiscono a istanze del problema in cui sia la matrice dei costi che la matrice delle risorse, sono generate in modo casuale; la matrice delle risorse è comune alle cinque istanze di ciascuna dimensione.\\
+La prima colonna contiene il nome dell'istanza; la seconda la dimensione, la terza il budget, la quarta colonna rappresenta il valore migliore ottenuto dal nostro algoritmo, la quinta riporta in secondi il numero di nodi generati, l'ultima colonna il tempo di computazione. Gli ottimi sono stati tutti verificati con GLPK.
+
+
+\begin{longtable}{|c|c|c|c|c|c|}
+\caption{Risultati per le istanze costi risorse casuali}\label{tab:consCasuali}\\
+\hline
+Nome ist. & Dim. & Budget &Sol. & n° nodi & Tempo\\
+\hline
+\hline
+\endfirsthead
+\hline
+Nome ist. & Dim. & Budget &Sol. &  n° nodi & Tempo\\ 
+\hline
+\hline
+\endhead
+ \multicolumn{5}{r}{Segue\dots}
+\endfoot
+%\hline
+\endlastfoot
+%\hline
+test11x11-1.dat & 11 & 301 & 116  & 29    & 0.04 \\
+\hline
+test11x11-2.dat & 11 & 301 & 139  & 29    & 0.04 \\
+\hline
+test11x11-3.dat & 11 & 301 & 190  & 70    & 0.03  \\
+\hline
+test11x11-4.dat & 11 & 301 & 164  & 28    & 0.04 \\
+\hline
+test11x11-5.dat & 11 & 301 & 188  & 56    & 0.03 \\
+\hline
+\hline
+test12x12-1.dat & 12 & 325 & 138  & 60   & 0.06 \\
+\hline
+test12x12-2.dat & 12 & 325 & 171  & 335  & 0.10 \\
+\hline
+test12x12-3.dat & 12 & 325 & 121  & 161  & 0.06 \\
+\hline
+test12x12-4.dat & 12 & 325 & 187  & 153  & 0.04 \\
+\hline
+test12x12-5.dat & 12 & 325 & 164  & 388  & 0.15 \\
+\hline
+\hline
+test13x13-1.dat & 13 & 370 & 148  & 17   & 0.01 \\
+\hline
+test13x13-2.dat & 13 & 370 & 213  & 208  & 0.07 \\
+\hline 
+test13x13-3.dat & 13 & 370 & 180  & 111  & 0.03 \\
+\hline
+test13x13-4.dat & 13 & 370 & 232  & 4380 & 0.76 \\
+\hline
+test13x13-5.dat & 13 & 370 & 118  & 212  & 0.04 \\
+\hline
+\hline
+test14x14-1.dat & 14 & 425 & 141  & 80  & 0.09 \\
+\hline
+test14x14-2.dat & 14 & 425 & 149  & 369  & 0.15\\
+\hline
+test14x14-3.dat & 14 & 425 & 175  & 450  & 0.28 \\
+\hline
+test14x14-4.dat & 14 & 425 & 158  & 122  & 0.06 \\
+\hline
+test14x14-5.dat & 14 & 425 & 72  & 107  & 0.04 \\
+\hline
+\hline
+test15x15-1.dat & 15 & 437 & 205  & 5181  & 1.40\\
+\hline
+test15x15-2.dat & 15 & 437 & 155  & 115  & 0.09\\
+\hline
+test15x15-3.dat & 15 & 437 & 201  & 699  & 0.23 \\
+\hline
+test15x15-4.dat & 15 & 437 & 246  & 1280  & 0.35 \\
+\hline
+test15x15-5.dat & 15 & 437 & 186  & 649  & 0.26 \\
+\hline
+	\end{longtable}
+
+\newpage
+
+\subsection{Consumi negativamente correlati ai costi}\label{sec:Matricenegcorr}
+
+I risultati mostrati in Tabella \ref{tab:negCorr} si riferiscono a istanze del problema in cui la matrice delle risorse è stata ricavata utilizzando il procedimento descritto in Sezione \ref{sec:gen_ris} in modo da essere negativamente correlate.\\
+La prima colonna contiene il nome dell'istanza; la seconda la dimensione, la terza il budget, la quarta colonna rappresenta il valore migliore ottenuto dal nostro algoritmo, la quinta è l'ottimo (ottenuto con il codice GLPK), la sesta riporta il numero di nodi generati, l'ultima colonna il tempo di computazione in secondi.\\
+Le prove sono state eseguite fissando un numero massimo di nodi pari a 500.000 e la strategia di visita best first.
+
+\begin{longtable}{|c|c|c|c|c|c|c|}
+\caption{Risultati matrice costi/risorse - parzialmente casuali}\label{tab:negCorr}\\
+\hline
+Nome ist. & Dim. & Budget &Sol. & Ottimo& n° nodi & Tempo\\ 
+\hline
+\hline
+\endfirsthead
+\hline
+Nome ist. & Dim. & Budget &Sol. & Ottimo & n° nodi & Tempo\\ 
+\hline
+\endhead
+ \multicolumn{6}{r}{Segue\dots}
+\endfoot
+%	\hline
+\endlastfoot
+%\hline
+test11x11.dat & 11 & 301 & 217 & 217 & 1564   & 0.26 \\
+\hline
+test12x12.dat & 12 & 325 & 194 & 194 & 4454   & 0.62 \\
+\hline
+test13x13.dat & 13 & 370 & 319 & 319 & 151.092 & 188.31 \\
+\hline
+test14x14.dat & 14 & 425 & 242 & 242 & 25877 & 10.39 \\
+\hline
+test15x15.dat & 15 & 437 & 290 & 290 & 343968 &  1179.14 \\
+\hline
+test16x16.dat & 16 & 450 & 159 & 159 & 64 & 0.04 \\
+\hline
+test17x17.dat & 17 & 481 & 244 & 244 & 451296 & 2876.03 \\
+\hline
+test18x18.dat & 18 & 522 & 174 & 174 & 4213 & 1.2 \\
+\hline
+	\end{longtable}
+
+La figura \ref{fig:ist_num_nodi} rappresenta il numero di nodi utilizzati per trovare la soluzione, al variare della dimensione dell'istanza presa in esame. Come si evince dall'istogramma, questo valore è fortemente variabile. La figura \ref{fig:ist_tempo} rappresenta il tempo di computazione, espresso in secondi, per trovare la soluzione. È chiaro che il tempo è fortemente correlato al numero di nodi analizzati.
+
+
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[height=7cm, width=13.5cm]{img/ist_num_nodi.png}
+	\caption{Numero di nodi necessari per risolvere ogni istanza}
+	\label{fig:ist_num_nodi}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[height=7cm, width=13.5cm]{img/ist_num_tempo.png}
+	\caption{Tempo di calcolo necessario per risolvere ogni istanza}
+	\label{fig:ist_tempo}
+\end{figure}
+

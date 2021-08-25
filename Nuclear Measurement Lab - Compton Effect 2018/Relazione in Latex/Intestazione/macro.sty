@@ -1,0 +1,68 @@
+% *********************************************************
+% *                       Macro                           *
+% *********************************************************
+
+% *                    \salvastmpB                        *
+
+% ? Produce un puntino del colore indicato in una pagina
+%   bianca, questo per evitare che il driver di stampa di 
+%   windows non riconosca la pagina bianca inserita 
+%   volontariamente e renda completamente errata la numera-
+%   zione del documento stampato
+
+\def\salvastmpB#1{\gdef\salvastmpB{#1}}
+\salvastmpB{\newpage\thispagestyle{empty}\textcolor{red}{.}}
+
+% #                   # Frontespizio #                    #
+
+% ? Macro usate nel frontespizio (\MIN, \ATENEO, \DIP, 
+%		\FAC, \LINE)
+
+% *                        \MIN                         *
+
+% ? Produce il logo dell'Universit� di Milano in conformi-
+%   t� con: http://www.unimi.it/ateneo/12902.htm
+
+\newcommand\MIN{\includegraphics[width=3.1cm,height=3.1cm]{minerva}}
+
+% *                       \ATENEO                       *
+
+% ? Produce la didascalia dell'ateneo:
+%   Universit� degli Studi di Milano
+%		
+
+\newcommand\ATENEO{\noindent\textsc{\Large Universit\`a degli Studi di Milano}}
+
+% *                         \DIP                        *
+
+% ? Produce la didascalia del dipartimento:
+%		Dipartimento di Tecnologie dell'Informazione
+
+\newcommand\DIP{\textsc{Dipartimento di Fisica}}
+
+% *                         \FAC                        *
+
+% ? Produce la didascalia della Facolt�:
+%		Facolt� di Scienze Matematiche, Fisiche e Naturali
+
+\newcommand\FAC{Facolt\`a di Scienze e Tecnologie}
+
+% *                        \LINE                         *
+
+% ? Produce la linea orizzontale nel frontespizio:
+
+\newcommand\LINE{\rule{130mm}{0.01mm}}
+
+% #                    # Documento #                     #
+
+% *                        \ds                           *
+
+% ? Produce \displaystyle nell'ambiente matematico:
+
+\newcommand\ds{\displaystyle}
+
+% *                        \al                           *
+
+% ? Produce \alpha nell'ambiente matematico:
+
+\newcommand\al{\alpha}

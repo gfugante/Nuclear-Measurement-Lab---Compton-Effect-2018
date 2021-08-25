@@ -1,0 +1,33 @@
+\documentclass[a4paper,12pt,twoside]{book}
+
+\usepackage{pacchetti}																%PACCHETTI USATI
+\usepackage{macro}																		%MACRO IMPLEMENTATE
+\makeindex																						%CREA INDICE ANALITICO
+
+\begin{document}  
+	\title{Accoppiamento con vincoli di risorsa}				%CREA TITOLO
+	\author{Andrea Gardoni \hfill xxxxxx}
+	\date{31 Aprile 2007}
+	\titolocorso{Progettazione e analisi di algoritmi}
+	\degreeyear{2006/2007}															% ANNO ACCADEMICO 
+	\principaladviser{Roberto Cordone\hfill}						% RELATORE PRINCIPALE
+	
+	\maketitle
+	\salvastmpB	
+	\clearpage{\pagestyle{empty}\cleardoublepage}
+	\tableofcontents
+	\salvastmpB	
+	\input{introduzione}
+	\salvastmpB	
+	\input{problema}
+	\input{algoritmo}
+	\salvastmpB	
+	\input{risultati_sper}
+  \clearpage{\pagestyle{empty}\cleardoublepage}
+	
+	\bibliographystyle{alpha}
+	\bibliography{bibliografia}
+	\addcontentsline{toc}{chapter}{Bibliografia}
+
+\end{document}
+% - Andrea Gardoni - Massimo Manara	- Luca Uberti Foppa -

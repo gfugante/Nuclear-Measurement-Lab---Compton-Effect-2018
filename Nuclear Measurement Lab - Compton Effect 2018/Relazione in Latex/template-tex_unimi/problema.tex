@@ -1,0 +1,66 @@
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter{Il problema}\label{Chap:Prob}
+
+\section{Definizione}
+
+Il problema affrontato è l'accoppiamento a costo minimo con vincoli di risorsa.
+
+Si devono assegnare $n$ persone (o macchine o entità) a $n$ progetti (o lavori), in modo che ciascuna persona sia assegnata a un progetto diverso. Assegnare la persona $i$ al progetto $j$ comporta un costo $c_{ij}$, ma anche l'uso di una risorsa in quantità limitata $r_{ij}$.
+
+Il problema può essere definito tramite un grafo bipartito $G=(V_{1} \cup V_{2},E)$ dove il sottoinsieme di vertici $V_{1}$ rappresenta l'insieme delle persone, il sottoinsieme di vertici $V_{2}$ rappresenta l'insieme dei progetti, mentre l'insieme dei lati $E$ rappresenta gli accoppiamenti possibili tra persone e progetti.\\
+Si vuole minimizzare il costo totale di tutti gli assegnamenti, garantendo che l'uso totale della risorsa non superi una data disponibilità $B$ (\emph{Budget}).
+
+\section{Formulazione}
+
+\textsc{Dati}:
+\begin{itemize}
+	\item $|V_{1}|=n$ persone e $|V_{2}|=n$ progetti
+	\item $c_{ij}$ costo di attribuzione progetto $j \in V_{2}$ alla persona $i \in V_{1}$
+	\item $r_{ij}$ risorsa consumata dalla persona $i \in V_{1}$ per il fare il progetto $j \in V_{2}$
+		%3)
+	\item L'uso di risorse totale:\hfill
+		\begin{equation}
+			R = \displaystyle\sum_{i \in V_{1}}\ds\sum_{j \in V_{2}} r_{ij}
+		\end{equation}
+	%4)
+	\item Il budget $B$, viene calcolato come ($\rho$ è un parametro):\hfill
+		\begin{equation}\label{eq:budget_cal}
+			B = \displaystyle\frac{R}{n} \cdot \rho \qquad \rho \in \left\{ 0.6,0.8,0.1 \right\}
+		\end{equation}
+\end{itemize}
+\textsc{Variabili}:
+	\begin{itemize}
+		\item Una soluzione è individuata dalle variabili:
+	\end{itemize}
+	\begin{equation*}
+		x_{i,j}=
+			\begin{cases}		
+				1& \text{progetto $j \in V_{2}$ alla persona $i \in V_{1}$},\\		
+				0& \text{altrimenti}.
+			\end{cases}
+	\end{equation*}
+\textsc{Vincoli}:
+\begin{itemize}
+	%1)
+	\item Una persona deve essere associata a un solo progetto:\hfill
+		\begin{equation}\label{eq:prog_lav0}
+			\displaystyle\sum_{j \in V_{2}}x_{ij}=1 \qquad i \in V_{1}
+		\end{equation}
+	%2)
+	\item Un progetto deve essere associato a una sola persona:\hfill
+		\begin{equation}\label{eq:lav_prog0}
+			\displaystyle\sum_{i \in V_{1}}x_{ij}=1\qquad j \in V_{2}
+		\end{equation}
+	%3)
+	\item Vincolo di budget\hfill
+		\begin{equation}\label{eq:budget0}
+			\ds\sum_{i \in V_{1}}\ds\sum_{j \in V_{2}} r_{ij} x_{ij} \leq B
+		\end{equation}
+\end{itemize}
+\textsc{Obiettivo}:
+\begin{itemize}
+	\item Si vuole minimizzare il costo totale:
+		\begin{equation}
+			\min\ \ds\sum_{i \in V_{1}}\ds\sum_{j \in V_{2}} c_{ij} x_{ij} 
+		\end{equation}
+\end{itemize}
